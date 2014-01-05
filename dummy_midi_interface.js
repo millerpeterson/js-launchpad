@@ -23,4 +23,5 @@ DummyMIDIInterface.prototype.bytesReceived = function(bytes) {
   this.emit('bytesReceived', bytes);
 };
 
-module.exports = DummyMIDIInterface;
+var dummyMIDI = DummyMIDIInterface;
+module.exports.midi = dummyMIDI;
