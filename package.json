@@ -1,0 +1,30 @@
+{
+  "name": "phi-launchpad",
+  "version": "1.0.0",
+  "description": "Library for easily interacting with the Novation Launchpad.",
+  "main": "launchpad.js",
+  "dependencies": {
+    "midi": "0.7.x"
+  },
+  "devDependencies": {
+    "mocha": "1.16.x"
+  },
+  "scripts": {
+    "test": "make test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://millerpeterson@github.com/millerpeterson/js-launchpad.git"
+  },
+  "keywords": [
+    "novation",
+    "launchpad",
+    "midi"
+  ],
+  "author": "Miller Peterson",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/millerpeterson/js-launchpad/issues"
+  },
+  "homepage": "https://github.com/millerpeterson/js-launchpad"
+}
