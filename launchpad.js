@@ -23,11 +23,18 @@ Launchpad.prototype.midiBytesReceived = function(bytes) {
 };
 
 Launchpad.prototype.handleTopButtonPress = function(ccVal, midiVel) {
-  console.log('handleTopButtonPress: ' + ccVal + ' ' + midiVel);
+  var row = 0;
+  var col = ccVal - 104; // Leftmost is 104
+  var onOff = midiVel / 127;
+  this.emit('buttonPress', row, col, onOff);
 }
 
 Launchpad.prototype.handleNonTopButtonPress = function(noteVal, midiVel) {
-  console.log('handleNonTopButtonPress: ' + noteVal + ' ' + midiVel);
+  var row = Math.floor(noteVal / 16);
+  row += 1; // Shift row down because top buttons are considered a row
+  var col = noteVal % 16;
+  var onOff = midiVel / 127;
+  this.emit('buttonPress', row, col, onOff);
 }
 
 Launchpad.prototype.init = function(midiInterface) {
@@ -46,5 +53,13 @@ var launchpad = Launchpad;
 module.exports.launchpad = launchpad;
 
 var mInt = new midiInt.midi();
-var lPad = new Launchpad()
+var lPad = new Launchpad();
 lPad.init(mInt);
+lPad.includeVelocity = false;
+lPad.on('buttonPress', function(row, col, onOff) {
+  console.log(util.format("buttonPress %d %d %d", row, col, onOff));
+})
+
+
+
+
