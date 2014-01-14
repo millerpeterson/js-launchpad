@@ -25,7 +25,7 @@ function testButtonClick(midiBytes, rowExpect, colExpect, done) {
   });
 }
 
-suite('launchpad-input-topButtons', function() {
+suite('launchpad-input', function() {
 
   beforeEach(function() {
     lPad.removeAllListeners('press');
