@@ -14,6 +14,7 @@ Launchpad.prototype.init = function(midiInterface) {
   this.midiInterface.init();
   this.midiInterface.on('bytesReceived',
     this.midiBytesReceived.bind(this));
+  this.displayedBuffer = 1;
 };
 
 Launchpad.prototype.emitButtonEvent = function(midiVel, row, col) {
@@ -50,9 +51,8 @@ Launchpad.prototype.cleanup = function() {
 };
 
 Launchpad.prototype.resetDevice = function() {
-  _.each([[176, 0, 0], [176, 0, 49]], _.bind(function(bytes) {
-    this.midiInterface.sendBytes(bytes);
-  }, this);
+  this.midiInterface.sendBytes([176, 0, 0]);
+  this.setDisplayedBuffer(1);
 };
 
 Launchpad.prototype.setLed = function(row, col, color, mode) {
@@ -79,11 +79,23 @@ Launchpad.prototype.setLed = function(row, col, color, mode) {
   this.midiInterface.sendBytes(outBytes);
 };
 
+Launchpad.prototype.setDisplayedBuffer = function(bufferNum) {
+  outBytes = [176, 0, 0];
+  outBytes[2] = (bufferNum == 1) ? 49 : 52;
+  this.midiInterface.sendBytes(outBytes);
+  this.displayedBuffer = bufferNum;
+};
+
+Launchpad.prototype.swapBuffers = function() {
+  var newDisplayBuffer = (this.displayedBuffer == 1) ? 0 : 1;
+  this.setDisplayedBuffer(newDisplayBuffer);
+};
+
 Launchpad.prototype.autoFlash = function(on) {
   outBytes = [176, 0, 0];
   outBytes[2] = on ? 40 : 52;
   this.midiInterface.sendBytes(outBytes);
-}
+};
 
 var launchpad = Launchpad;
 module.exports.launchpad = launchpad;
