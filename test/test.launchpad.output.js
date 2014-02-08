@@ -15,11 +15,6 @@ function assertExpectedLoggedBytes(lPad, expectedBytes) {
       assert.equal(actualBytes[i][j], expectedBytes[i][j]);
     }
   }
-  // actualBytes = lPad.midiInterface.loggedBytes[0];
-  // assert.equal(actualBytes.length, expectedBytes.length);
-  // for (i = 0; i < actualBytes.length; i++) {
-  //   assert.equal(actualBytes[i], expectedBytes[i]);
-  // }
 }
 
 suite('launchpad-output', function() {
@@ -56,6 +51,13 @@ suite('launchpad-output', function() {
   test('autoFlash off', function() {
     lPad.autoFlash(false);
     assertExpectedLoggedBytes(lPad, [[176, 0, 52]]);
+  });
+
+  test('resetDevice', function() {
+    lPad.resetDevice();
+    assertExpectedLoggedBytes(lPad, [
+      [176, 0, 0], [176, 0, 49]
+    ]);
   });
 
 });

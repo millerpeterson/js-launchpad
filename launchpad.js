@@ -49,16 +49,11 @@ Launchpad.prototype.cleanup = function() {
   this.midiInterface.cleanup();
 };
 
-// var isValidSetLedArgs = function(row, col, red, green, mode) {
-//   return (
-//     (row >= 0) && (row <= 8) &&
-//     (col >= 0) && (col <= 8) &&
-//     !((row == 8) && (col == 8)) &&
-//     (red >= 0) && (red <= 3) &&
-//     (green >= 0) && (green <= 3) &&
-//     (_.contains(_.keys(setLedModes), mode))
-//   )
-// }
+Launchpad.prototype.resetDevice = function() {
+  _.each([[176, 0, 0], [176, 0, 49]], _.bind(function(bytes) {
+    this.midiInterface.sendBytes(bytes);
+  }, this);
+};
 
 Launchpad.prototype.setLed = function(row, col, color, mode) {
   var red = color[0];
