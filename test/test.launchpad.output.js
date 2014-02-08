@@ -5,7 +5,6 @@ var util = require('util');
 var _ = require('underscore');
 
 var lPad = new launchpad.launchpad();
-lPad.init(new dummyMIDI.midi());
 
 function assertExpectedLoggedBytes(lPad, expectedBytes) {
   var actualBytes = lPad.midiInterface.loggedBytes;
@@ -20,7 +19,7 @@ function assertExpectedLoggedBytes(lPad, expectedBytes) {
 suite('launchpad-output', function() {
 
   beforeEach(function() {
-    lPad.midiInterface.clearLog();
+    lPad.init(new dummyMIDI.midi());
   });
 
   test('setLed valid main grid 1', function() {
@@ -58,6 +57,29 @@ suite('launchpad-output', function() {
     assertExpectedLoggedBytes(lPad, [
       [176, 0, 0], [176, 0, 49]
     ]);
+  });
+
+  test('setDisplayedBuffer 1', function() {
+    lPad.setDisplayedBuffer(1);
+    assertExpectedLoggedBytes(lPad, [[176, 0, 49]]);
+  });
+
+  test('setDisplayedBuffer 0', function() {
+    lPad.setDisplayedBuffer(0);
+    assertExpectedLoggedBytes(lPad, [[176, 0, 52]]);
+  });
+
+  test('swapBuffers', function() {
+    assert.equal(lPad.displayedBuffer, 1);
+
+    lPad.swapBuffers();
+    assert.equal(lPad.displayedBuffer, 0);
+    assertExpectedLoggedBytes(lPad, [[176, 0, 52]]);
+    lPad.midiInterface.clearLog();
+
+    lPad.swapBuffers();
+    assert.equal(lPad.displayedBuffer, 1);
+    assertExpectedLoggedBytes(lPad, [[176, 0, 49]]);
   });
 
 });
