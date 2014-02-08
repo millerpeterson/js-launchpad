@@ -73,7 +73,7 @@ Launchpad.prototype.setLed = function(row, col, color, mode) {
   }[mode];
 //  if !(isValidSetLedArgs)
   outBytes = new Array(3);
-  if (row == 0) {
+  if (row == 0) { // Top row of buttons are sent as CC vals
     outBytes[0] = 176; // CC
     outBytes[1] = 104 + col;
   } else {
@@ -83,6 +83,12 @@ Launchpad.prototype.setLed = function(row, col, color, mode) {
   outBytes[2] = (green * 16) + red + setLedModeFlag;
   this.midiInterface.sendBytes(outBytes);
 };
+
+Launchpad.prototype.autoFlash = function(on) {
+  outBytes = [176, 0, 0];
+  outBytes[2] = on ? 40 : 52;
+  this.midiInterface.sendBytes(outBytes);
+}
 
 var launchpad = Launchpad;
 module.exports.launchpad = launchpad;

@@ -8,14 +8,18 @@ var lPad = new launchpad.launchpad();
 lPad.init(new dummyMIDI.midi());
 
 function assertExpectedLoggedBytes(lPad, expectedBytes) {
-  var actualBytes;
-  var i;
-  assert.equal(lPad.midiInterface.loggedBytes.length, 1);
-  actualBytes = lPad.midiInterface.loggedBytes[0];
+  var actualBytes = lPad.midiInterface.loggedBytes;
   assert.equal(actualBytes.length, expectedBytes.length);
-  for (i = 0; i < actualBytes.length; i++) {
-    assert.equal(actualBytes[i], expectedBytes[i]);
+  for (var i = 0; i < expectedBytes.length; i++) {
+    for (var j = 0; j < expectedBytes[i].length; j++) {
+      assert.equal(actualBytes[i][j], expectedBytes[i][j]);
+    }
   }
+  // actualBytes = lPad.midiInterface.loggedBytes[0];
+  // assert.equal(actualBytes.length, expectedBytes.length);
+  // for (i = 0; i < actualBytes.length; i++) {
+  //   assert.equal(actualBytes[i], expectedBytes[i]);
+  // }
 }
 
 suite('launchpad-output', function() {
@@ -26,22 +30,32 @@ suite('launchpad-output', function() {
 
   test('setLed valid main grid 1', function() {
     lPad.setLed(3, 4, [0, 2], 'copy');
-    assertExpectedLoggedBytes(lPad, [144, 36, 44]);
+    assertExpectedLoggedBytes(lPad, [[144, 36, 44]]);
   })
 
   test('setLed valid main grid 2', function() {
     lPad.setLed(7, 7, [1, 1], 'update');
-    assertExpectedLoggedBytes(lPad, [144, 103, 25]);
+    assertExpectedLoggedBytes(lPad, [[144, 103, 25]]);
   })
 
   test('setLed valid main grid 3', function() {
     lPad.setLed(1, 7, [3, 0], 'flash');
-    assertExpectedLoggedBytes(lPad, [144, 7, 3]);
+    assertExpectedLoggedBytes(lPad, [[144, 7, 3]]);
   })
 
   test('setLed main grid no mode specified', function() {
     lPad.setLed(6, 0, [0, 0]);
-    assertExpectedLoggedBytes(lPad, [144, 80, 12]);
+    assertExpectedLoggedBytes(lPad, [[144, 80, 12]]);
   })
+
+  test('autoFlash on', function() {
+    lPad.autoFlash(true);
+    assertExpectedLoggedBytes(lPad, [[176, 0, 40]]);
+  });
+
+  test('autoFlash off', function() {
+    lPad.autoFlash(false);
+    assertExpectedLoggedBytes(lPad, [[176, 0, 52]]);
+  });
 
 });
