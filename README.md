@@ -4,7 +4,7 @@ phi-launchpad-js
 A Node.js interface for interacting with the Novation 
 Launchpad.
 
-phi-launchpad-js implements the [Launchpad MIDI spec](http://global.novationmusic.com/support/product-downloads?product=Launchpad, "Launchpad programmer's reference) 
+phi-launchpad-js implements the [Launchpad MIDI spec](http://global.novationmusic.com/support/product-downloads?product=Launchpad, "Launchpad programmer's reference") 
 allowing you to catch button presses and manipulate LEDs. 
 
 ## Setup
