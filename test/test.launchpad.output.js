@@ -4,8 +4,6 @@ var assert = require('assert');
 var util = require('util');
 var _ = require('underscore');
 
-var lPad = new launchpad.launchpad();
-
 function assertExpectedLoggedBytes(lPad, expectedBytes) {
   var actualBytes = lPad.midiInterface.loggedBytes;
   assert.equal(actualBytes.length, expectedBytes.length);
@@ -16,10 +14,13 @@ function assertExpectedLoggedBytes(lPad, expectedBytes) {
   }
 }
 
+var lPad = new launchpad.launchpad()
+lPad.init(new dummyMIDI.midi());
+
 suite('launchpad-output', function() {
 
   beforeEach(function() {
-    lPad.init(new dummyMIDI.midi());
+    lPad.resetDevice();
     lPad.midiInterface.clearLog();
   });
 
@@ -43,12 +44,12 @@ suite('launchpad-output', function() {
     assertExpectedLoggedBytes(lPad, [[144, 80, 12]]);
   });
 
-	test('setLed invalid args', function() {
-		lPad.setLed(-10, 0, [3, 2]);
-		assertExpectedLoggedBytes(lPad, []);
-		lPad.setLed(4, 3, [3, 1222]);
-		assertExpectedLoggedBytes(lPad, []);
-	});
+  test('setLed invalid args', function() {
+    lPad.setLed(-10, 0, [3, 2]);
+    assertExpectedLoggedBytes(lPad, []);
+    lPad.setLed(4, 3, [3, 1222]);
+    assertExpectedLoggedBytes(lPad, []);
+  });
 
   test('autoFlash on', function() {
     lPad.autoFlash(true);
