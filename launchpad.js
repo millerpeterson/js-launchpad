@@ -10,14 +10,18 @@ var Launchpad = function() {
 util.inherits(Launchpad, events.EventEmitter);
 
 Launchpad.prototype.init = function(midiInterface) {
+	if (typeof(midiInterface) === 'undefined') {
+		midiInterface = new midiInt.midi();
+	};
   this.midiInterface = midiInterface;
   this.midiInterface.init();
+	this.resetDevice();
   this.midiInterface.on('bytesReceived',
     this.midiBytesReceived.bind(this));
-  this.displayedBuffer = 1;
-};
+ }
 
-Launchpad.prototype.emitButtonEvent = function(midiVel, row, col) {
+Launchpad.prototype.emitButtonEvent = function(
+	midiVel, row, col) {
   var eventName = (midiVel == 127) ? 'press' : 'release';
   this.emit(eventName, row, col);
 };
@@ -33,18 +37,21 @@ Launchpad.prototype.midiBytesReceived = function(bytes) {
   }
 };
 
-Launchpad.prototype.handleTopButtonPress = function(ccVal, midiVel) {
-  var row = 0;
-  var col = ccVal - 104; // Leftmost is 104
-  this.emitButtonEvent(midiVel, row, col);
-};
+Launchpad.prototype.handleTopButtonPress = 
+	function(ccVal, midiVel) {
+		var row = 0;
+		var col = ccVal - 104; // Leftmost is 104
+		this.emitButtonEvent(midiVel, row, col);
+	};
 
-Launchpad.prototype.handleNonTopButtonPress = function(noteVal, midiVel) {
-  var row = Math.floor(noteVal / 16);
-  row += 1; // Shift row down because top buttons are considered a row
-  var col = noteVal % 16;
-  this.emitButtonEvent(midiVel, row, col);
-};
+Launchpad.prototype.handleNonTopButtonPress = 
+	function(noteVal, midiVel) {
+		var row = Math.floor(noteVal / 16);
+		// Shift row down because top buttons are considered a row
+		row += 1;
+		var col = noteVal % 16;
+		this.emitButtonEvent(midiVel, row, col);
+	};
 
 Launchpad.prototype.cleanup = function() {
   this.midiInterface.cleanup();
@@ -55,7 +62,25 @@ Launchpad.prototype.resetDevice = function() {
   this.setDisplayedBuffer(1);
 };
 
+Launchpad.prototype.validLedPos = function(row, col) {
+	return ((row >= 0) && (row <= 9) &&
+					(col >= 0) && (col <= 9));
+};
+
+Launchpad.prototype.validColor = function(c) {
+	var validComponent = function(c) {
+		return ((c >= 0) && (c <= 3));
+	};
+	return _.isArray(c) && 
+		validComponent(c[0]) &&
+		validComponent(c[1]);
+};
+
 Launchpad.prototype.setLed = function(row, col, color, mode) {
+	if (!(this.validLedPos(row, col) && 
+				this.validColor(color))) {
+		return;
+	}
   var red = color[0];
   var green = color[1];
   if (typeof(mode) === 'undefined') {
@@ -66,7 +91,6 @@ Launchpad.prototype.setLed = function(row, col, color, mode) {
     'update': 8,
     'flash': 0
   }[mode];
-//  if !(isValidSetLedArgs)
   outBytes = new Array(3);
   if (row == 0) { // Top row of buttons are sent as CC vals
     outBytes[0] = 176; // CC
@@ -99,13 +123,3 @@ Launchpad.prototype.autoFlash = function(on) {
 
 var launchpad = Launchpad;
 module.exports.launchpad = launchpad;
-
-// var mInt = new midiInt.midi();
-// var lPad = new Launchpad();
-// lPad.init(mInt);
-// lPad.on('press', function(row, col) {
-//   console.log(util.format("press %d %d", row, col));
-// })
-// lPad.on('release', function(row, col) {
-//   console.log(util.format("release %d %d", row, col));
-// })
