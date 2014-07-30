@@ -10,21 +10,21 @@ var Launchpad = function() {
 util.inherits(Launchpad, events.EventEmitter);
 
 Launchpad.prototype.init = function(midiInterface) {
-	if (typeof(midiInterface) === 'undefined') {
-		midiInterface = new midiInt.midi();
-	};
+  if (typeof(midiInterface) === 'undefined') {
+    midiInterface = new midiInt.midi();
+  };
   this.midiInterface = midiInterface;
   this.midiInterface.init();
-	this.resetDevice();
+  this.resetDevice();
   this.midiInterface.on('bytesReceived',
-    this.midiBytesReceived.bind(this));
+    _.bind(this.midiBytesReceived, this));
  }
 
-Launchpad.prototype.emitButtonEvent = function(
-	midiVel, row, col) {
-  var eventName = (midiVel == 127) ? 'press' : 'release';
-  this.emit(eventName, row, col);
-};
+Launchpad.prototype.emitButtonEvent = 
+  function(midiVel, row, col) {
+    var eventName = (midiVel == 127) ? 'press' : 'release';
+    this.emit(eventName, row, col);
+  };
 
 Launchpad.prototype.midiBytesReceived = function(bytes) {
   var midiCmd = bytes[0];
@@ -38,20 +38,20 @@ Launchpad.prototype.midiBytesReceived = function(bytes) {
 };
 
 Launchpad.prototype.handleTopButtonPress = 
-	function(ccVal, midiVel) {
-		var row = 0;
-		var col = ccVal - 104; // Leftmost is 104
-		this.emitButtonEvent(midiVel, row, col);
-	};
+  function(ccVal, midiVel) {
+    var row = 0;
+    var col = ccVal - 104; // Leftmost is 104
+    this.emitButtonEvent(midiVel, row, col);
+  };
 
 Launchpad.prototype.handleNonTopButtonPress = 
-	function(noteVal, midiVel) {
-		var row = Math.floor(noteVal / 16);
-		// Shift row down because top buttons are considered a row
-		row += 1;
-		var col = noteVal % 16;
-		this.emitButtonEvent(midiVel, row, col);
-	};
+  function(noteVal, midiVel) {
+    var row = Math.floor(noteVal / 16);
+    // Shift row down because top buttons are considered a row
+    row += 1;
+    var col = noteVal % 16;
+    this.emitButtonEvent(midiVel, row, col);
+  };
 
 Launchpad.prototype.cleanup = function() {
   this.midiInterface.cleanup();
@@ -63,24 +63,24 @@ Launchpad.prototype.resetDevice = function() {
 };
 
 Launchpad.prototype.validLedPos = function(row, col) {
-	return ((row >= 0) && (row <= 9) &&
-					(col >= 0) && (col <= 9));
+  return ((row >= 0) && (row <= 9) &&
+	  (col >= 0) && (col <= 9));
 };
 
 Launchpad.prototype.validColor = function(c) {
-	var validComponent = function(c) {
-		return ((c >= 0) && (c <= 3));
-	};
-	return _.isArray(c) && 
-		validComponent(c[0]) &&
-		validComponent(c[1]);
+  var validComponent = function(c) {
+    return ((c >= 0) && (c <= 3));
+  };
+  return _.isArray(c) && 
+    validComponent(c[0]) &&
+    validComponent(c[1]);
 };
 
 Launchpad.prototype.setLed = function(row, col, color, mode) {
-	if (!(this.validLedPos(row, col) && 
-				this.validColor(color))) {
-		return;
-	}
+  if (!(this.validLedPos(row, col) && 
+	this.validColor(color))) {
+    return;
+  }
   var red = color[0];
   var green = color[1];
   if (typeof(mode) === 'undefined') {
