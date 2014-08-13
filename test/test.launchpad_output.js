@@ -91,4 +91,19 @@ suite('launchpad-output', function() {
     assertExpectedLoggedBytes(lPad, [[176, 0, 49]]);
   });
 
+  test('rapidUpdate', function() {
+    var colors1 = [[1, 3], [2, 1]];
+    var colors2 = [[1, 3], [2, 1], [1, 1]];
+    var colors3 = [[2, 2], [3, 3], [0, 0], [0, 0]];
+    
+    _.each([colors1, colors2, colors3], function(c) {
+      lPad.rapidUpdate(c);
+    });
+
+    assertExpectedLoggedBytes(lPad, [[146, 49, 18],
+				     [146, 49, 18],
+				     [146, 34, 51],
+				     [146, 0, 0]]);
+  });
+
 });
