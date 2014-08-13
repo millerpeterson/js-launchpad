@@ -104,7 +104,7 @@ Launchpad.prototype.setLed = function(row, col, color, mode) {
 };
 
 Launchpad.prototype.setDisplayedBuffer = function(bufferNum) {
-  outBytes = [176, 0, 0];
+  var outBytes = [176, 0, 0];
   outBytes[2] = (bufferNum == 1) ? 49 : 52;
   this.midiInterface.sendBytes(outBytes);
   this.displayedBuffer = bufferNum;
@@ -116,9 +116,34 @@ Launchpad.prototype.swapBuffers = function() {
 };
 
 Launchpad.prototype.autoFlash = function(on) {
-  outBytes = [176, 0, 0];
+  var outBytes = [176, 0, 0];
   outBytes[2] = on ? 40 : 52;
   this.midiInterface.sendBytes(outBytes);
+};
+
+Launchpad.prototype.rapidUpdate = function(ledColors) {
+  var colorByteValue;
+  var closestEven = ledColors.length - (ledColors.length % 2);
+  var numColors = Math.min(closestEven, 40); 
+  // Convert to a list of [color, color] pairs, then iterate
+  // through them, generating one MIDI message per pair.
+  var pairs = _.reduce(_.range(0, numColors, 2), 
+		       function(ps, i) {
+			 ps.push([ledColors[i], 
+				  ledColors[i + 1]]);
+			 return ps;
+		       }, []);  
+  colorByteValue = function(color) {
+    return (color[1] * 16) + color[0];
+  };
+  _.each(pairs, _.bind(function(pair) {
+    if (!_.every(pair, this.validColor)) {
+      _.find();
+    }
+    this.midiInterface.sendBytes([146,
+				  colorByteValue(pair[0]),
+				  colorByteValue(pair[1])]);
+  }, this));
 };
 
 var launchpad = Launchpad;
