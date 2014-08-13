@@ -137,12 +137,11 @@ Launchpad.prototype.rapidUpdate = function(ledColors) {
     return (color[1] * 16) + color[0];
   };
   _.each(pairs, _.bind(function(pair) {
-    if (!_.every(pair, this.validColor)) {
-      _.find();
+    if (_.every(pair, this.validColor)) {
+      this.midiInterface.sendBytes([146,
+				    colorByteValue(pair[0]),
+				    colorByteValue(pair[1])]);
     }
-    this.midiInterface.sendBytes([146,
-				  colorByteValue(pair[0]),
-				  colorByteValue(pair[1])]);
   }, this));
 };
 
