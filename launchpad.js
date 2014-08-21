@@ -1,7 +1,6 @@
 var _ = require('underscore');
 var util = require('util');
 var events = require('events');
-var midiInt = require('./node_midi_interface');
 
 var Launchpad = function() {
   events.EventEmitter.call(this);
@@ -143,6 +142,12 @@ Launchpad.prototype.rapidUpdate = function(ledColors) {
 				    colorByteValue(pair[1])]);
     }
   }, this));
+};
+
+Launchpad.prototype.setDutyCycle = function(num, denum) {
+};
+
+Launchpad.prototype.setBrightness = function(brightness) {
 };
 
 var launchpad = Launchpad;
