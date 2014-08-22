@@ -21,11 +21,6 @@ var Buffer = function(numRows, numCols) {
   }
 };
 
-Buffer.method('validPos', function(r, c) {
-  return ((r >= 0) && (r <= this.numRows) && 
-	  (c >= 0) && (c <= this.numCols));
-});
-
 Buffer.method('led', function(rc) {
   return this.leds[rc[0]][rc[1]];
 });
@@ -40,11 +35,8 @@ Buffer.method('setLed', function(row, col, color) {
 Buffer.method('diff', function(otherBuffer) {
   var diffBuffer = new Buffer(this.numRows, this.numCols);
   this.rowColEach(function(r, c, l) {
-    var otherLed;
-    if (otherBuffer.validPos(r, c)) {
-      otherLed = otherBuffer.leds[r][c];
-      diffBuffer.setLed(r, c, l.sub(otherLed));
-    }
+    otherLed = otherBuffer.leds[r][c];
+    diffBuffer.setLed(r, c, l.sub(otherLed));
   });
   return diffBuffer;
 });
