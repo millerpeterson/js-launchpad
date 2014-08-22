@@ -1,6 +1,7 @@
 var _ = require('underscore');
 var util = require('util');
 var events = require('events');
+var midiInt = require('./node_midi_interface').midi;
 
 var Launchpad = function() {
   events.EventEmitter.call(this);
@@ -10,7 +11,7 @@ util.inherits(Launchpad, events.EventEmitter);
 
 Launchpad.prototype.init = function(midiInterface) {
   if (typeof(midiInterface) === 'undefined') {
-    midiInterface = new midiInt.midi();
+    midiInterface = new midiInt();
   };
   this.midiInterface = midiInterface;
   this.midiInterface.init();
