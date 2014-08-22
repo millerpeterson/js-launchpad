@@ -1,18 +1,11 @@
+var testHelper = require('./test_helper.js');
 var launchpad = require('./../launchpad.js');
 var dummyMIDI = require('./../dummy_midi_interface.js');
 var assert = require('assert');
 var util = require('util');
 var _ = require('underscore');
-
-function assertExpectedLoggedBytes(lPad, expectedBytes) {
-  var actualBytes = lPad.midiInterface.loggedBytes;
-  assert.equal(actualBytes.length, expectedBytes.length);
-  for (var i = 0; i < expectedBytes.length; i++) {
-    for (var j = 0; j < expectedBytes[i].length; j++) {
-      assert.equal(actualBytes[i][j], expectedBytes[i][j]);
-    }
-  }
-}
+var assertExpectedLoggedBytes = 
+  testHelper.assertExpectedLoggedBytes;
 
 var lPad = new launchpad.launchpad()
 lPad.init(new dummyMIDI.midi());
