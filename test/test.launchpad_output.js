@@ -7,7 +7,7 @@ var _ = require('underscore');
 var assertExpectedLoggedBytes = 
   testHelper.assertExpectedLoggedBytes;
 
-var lPad = new launchpad.launchpad()
+var lPad = new launchpad.output()
 lPad.init(new dummyMIDI.midi());
 
 suite('launchpad-output', function() {

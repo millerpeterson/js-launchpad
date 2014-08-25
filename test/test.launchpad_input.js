@@ -3,7 +3,7 @@ var dummyMIDI = require('./../dummy_midi_interface.js')
 var assert = require('assert');
 var _ = require('underscore');
 
-var lPad = new launchpad.launchpad();
+var lPad = new launchpad.input();
 lPad.init(new dummyMIDI.midi());
 
 function testButtonClick(midiBytes, rowExpect, colExpect, done) {

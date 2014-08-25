@@ -1,4 +1,5 @@
 var _ = require('underscore');
+var func = require('./util/func');
 var midiInt = require('./node_midi_interface').midi;
 
 var LaunchpadOut = function() {};

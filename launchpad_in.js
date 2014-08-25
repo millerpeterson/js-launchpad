@@ -1,10 +1,14 @@
+var _ = require('underscore');
 var util = require('util');
+var func = require('./util/func');
 var events = require('events');
 var midiInt = require('./node_midi_interface').midi;
 
+var LaunchpadIn = function() {};
+
 util.inherits(LaunchpadIn, events.EventEmitter);
 
-var LaunchpadIn = function(midiInterface) {
+LaunchpadIn.method('init', function(midiInterfac) {
   if (typeof(midiInterface) === 'undefined') {
     midiInterface = new midiInt();
   };
@@ -13,7 +17,7 @@ var LaunchpadIn = function(midiInterface) {
   this.midiInterface.init();
   this.midiInterface.on('bytesReceived',
     _.bind(this.midiBytesReceived, this));
-};
+});
 
 LaunchpadIn.method('cleanup', function() {
   this.midiInterface.cleanup();
