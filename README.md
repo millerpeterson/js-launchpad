@@ -25,7 +25,6 @@ $ npm install plaunchpad
 var plaunchpad = require('plaunchpad');
 var lpadIn = new plaunchpad.input();
 var lpadOut = new plaunchpad.output();
-
 ```
 
 ### Listening for button presses
@@ -38,18 +37,22 @@ lpadIn.on('press', function(row, col) {
 lpadIn.on('release', function(row, col) {
   console.log(util.format("release %d %d", row, col));
 });
-
 ```
 
 ### Setting LEDs
 
 ```Javascript
 lpadOut.setLed(3, 4, [0, 3]);
+```
 
 Set the LED in row 3, column 4, to be the color with red = 0
 (no red) and green = 3 (full green). Calls with arguments out 
 of range either in position or color are ignored.
-```
+
+plaunchpad addresses the Launchpad as a 9x9 matrix with a 
+"hole" in the upper rightmost element.
+
+Colors are represented as red/green pairs: [0..3,0..3]
 
 ### Buffered Updates
 
@@ -72,9 +75,6 @@ lpadOut.swapBuffers();
 ### Rapid Updates
 
 ### Adjusting Brightness
-
-plaunchpad addresses the Launchpad as a 9x9 matrix with a 
-"hole" in the upper rightmost element.
 
 ### MIDI device name
 
