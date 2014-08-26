@@ -64,15 +64,21 @@ changes immediately.
 
 ```Javascript
 # Send a number of updates to the hidden buffer:
-lpadOut.setLed(5, 6, [2, 2], 'update');
-lpadOut.setLed(3, 4, [0, 2], 'update');
-lpadOut.setLed(5, 7, [2, 0], 'update');
+lpadOut.setLed(5, 6, [2, 2], 'buffer');
+lpadOut.setLed(3, 4, [0, 2], 'buffer');
+lpadOut.setLed(5, 7, [2, 0], 'buffer');
+
+# OR, set the output to always buffer:
+lpadOut.alwaysBuffer();
+lpadOut.setLed(3, 4, [0, 2]);
+lpadOut.setLed(5, 7, [2, 0]);
 
 # Show all changes at once:
 lpadOut.swapBuffers();
 ```
 
-### Rapid Updates
+plaunchpad sends the minimum number of MIDI messages for your
+changes to be displayed, conserving MIDI bandwidth.
 
 ### Adjusting Brightness
 
