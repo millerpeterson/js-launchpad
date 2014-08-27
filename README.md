@@ -1,10 +1,8 @@
 plaunchpad
 ==========
 
-A Node.js interface for interacting with the Novation Launchpad.
-
-plaunchpad implements the [Launchpad MIDI spec](http://global.novationmusic.com/support/product-downloads?product=Launchpad, "Launchpad programmer's reference") 
-allowing you to catch button presses and manipulate LEDs.
+A simple and efficient Node.js interface for interacting with 
+the Novation Launchpad.
 
 ## Installation
 
@@ -42,7 +40,7 @@ lpadIn.on('release', function(row, col) {
 ### Setting LEDs
 
 ```Javascript
-lpadOut.setLed(3, 4, [0, 3]);
+lpadOut.setLed([3, 4], [0, 3]);
 ```
 
 Set the LED in row 3, column 4, to be the color with red = 0
@@ -64,14 +62,14 @@ changes immediately.
 
 ```Javascript
 # Send a number of updates to the hidden buffer:
-lpadOut.setLed(5, 6, [2, 2], 'buffer');
-lpadOut.setLed(3, 4, [0, 2], 'buffer');
-lpadOut.setLed(5, 7, [2, 0], 'buffer');
+lpadOut.setLed([5, 6], [2, 2], 'buffer');
+lpadOut.setLed([3, 4], [0, 2], 'buffer');
+lpadOut.setLed([5, 7], [2, 0], 'buffer');
 
 # OR, set the output to always buffer:
 lpadOut.alwaysBuffer();
-lpadOut.setLed(3, 4, [0, 2]);
-lpadOut.setLed(5, 7, [2, 0]);
+lpadOut.setLed([3, 4], [0, 2]);
+lpadOut.setLed([5, 7], [2, 0]);
 
 # Show all changes at once:
 lpadOut.swapBuffers();
@@ -85,7 +83,8 @@ changes to be displayed, conserving MIDI bandwidth.
 ### MIDI device name
 
 To use a Launchpad with a MIDI device name other than
-"Launchpad" (the default if unspecified), you can do the following:
+"Launchpad" (the default if unspecified), you can pass a MIDI
+device with your device name specified as follows:
 
 ```Javascript
 var midiInt = require('./node_midi_interface').midi;
