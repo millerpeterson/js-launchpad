@@ -1,6 +1,6 @@
 var testHelper = require('./test_helper.js');
-var launchpad = require('./../launchpad.js');
-var dummyMIDI = require('./../dummy_midi_interface.js');
+var launchpad = require('./../lib/launchpad.js');
+var dummyMIDI = require('./../lib/dummy_midi_interface.js');
 var assert = require('assert');
 var util = require('util');
 var _ = require('underscore');
@@ -88,15 +88,27 @@ suite('launchpad-output', function() {
     var colors1 = [[1, 3], [2, 1]];
     var colors2 = [[1, 3], [2, 1], [1, 1]];
     var colors3 = [[2, 2], [3, 3], [0, 0], [0, 0]];
-    
     _.each([colors1, colors2, colors3], function(c) {
       lPad.rapidUpdate(c);
     });
-
     assertExpectedLoggedBytes(lPad, [[146, 49, 18],
 				     [146, 49, 18],
 				     [146, 34, 51],
 				     [146, 0, 0]]);
+  });
+
+  test('setDutyCycle', function() {
+    var testDutyCycles = [[12, 5], 
+			  [2, 12],
+			  [9, 18],
+			  [14, 12]]
+    _.each(testDutyCycles, function(dc) {
+      lPad.setDutyCycle(dc[0], dc[1]);
+    });
+    assertExpectedLoggedBytes(lPad, [[176, 31, 50],
+				     [176, 30, 25],
+				     [176, 31, 15],
+				     [176, 31, 89]]);
   });
 
 });

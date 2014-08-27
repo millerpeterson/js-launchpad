@@ -1,5 +1,5 @@
-var launchpad = require('./../launchpad.js')
-var dummyMIDI = require('./../dummy_midi_interface.js')
+var launchpad = require('./../lib/launchpad.js')
+var dummyMIDI = require('./../lib/dummy_midi_interface.js')
 var assert = require('assert');
 var _ = require('underscore');
 
