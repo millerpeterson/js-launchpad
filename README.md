@@ -77,8 +77,7 @@ lpadOut.setLed(5, 7, [2, 0]);
 lpadOut.swapBuffers();
 ```
 
-plaunchpad sends the minimum number of MIDI messages for your
-changes to be displayed, conserving MIDI bandwidth.
+### Rapid Updates
 
 ### Adjusting Brightness
 
