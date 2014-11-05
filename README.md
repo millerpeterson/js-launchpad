@@ -62,24 +62,63 @@ large portions of the Launchpad, you can send updates to the
 hidden buffer, then swap the two buffers to show all of the 
 changes immediately.
 
+Send a number of updates to the hidden buffer:
+
 ```Javascript
-# Send a number of updates to the hidden buffer:
 lpadOut.setLed(5, 6, [2, 2], 'buffer');
 lpadOut.setLed(3, 4, [0, 2], 'buffer');
 lpadOut.setLed(5, 7, [2, 0], 'buffer');
+```
 
-# OR, set the output to always buffer:
-lpadOut.alwaysBuffer();
-lpadOut.setLed(3, 4, [0, 2]);
-lpadOut.setLed(5, 7, [2, 0]);
-
-# Show all changes at once:
+Show all changes at once:
+```Javascript
 lpadOut.swapBuffers();
 ```
 
 ### Rapid Updates
 
+You can update large parts of the Launchpad with fewer MIDI messages
+using the rapid update function. Pass in a list of up to 80 red/green
+pairs as a flat array:
+
+```JavaScript
+lpadOut.rapidUpdate(2, 3, 4, 2, 0 ... 3, 2);
+lpadOut.swapBuffers();
+```
+
+Note that swapBuffers() needs to be called for the update to show.
+
+### Autoflash
+
+Set some LEDs with the 'flash' flag:
+
+```Javascript
+lpadOut.setLed(2, 5, [2, 2], 'flash');
+```
+
+Then turn on autoflash to see them blink at a set rate:
+
+```Javascript
+lpadOut.autoFlash(true);
+```
+
+Pass false to autoFlash to stop the blinking.
+
+```Javascript
+lpadOut.autoFlash(false);
+```
+
 ### Adjusting Brightness
+
+Set brightness as a single value (0 - 255):
+```Javacript
+lpadOut.setBrightness(64);
+```
+
+Set brightness as duty cycle (numerator, denominator):
+```Javascript
+lpadOut.setDutyCycle(1, 8);
+```
 
 ### MIDI device name
 
@@ -90,5 +129,5 @@ To use a Launchpad with a MIDI device name other than
 var midiInt = require('./node_midi_interface').midi;
 var m = new midiInt(/Your Device Name/);
 lpadIn = new plaunchpad.input(m);
-lpadOut = new plaunchpad.outpu(m);
+lpadOut = new plaunchpad.output(m);
 ```
