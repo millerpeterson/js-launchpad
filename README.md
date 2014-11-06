@@ -51,6 +51,9 @@ lpadIn.on('release', function(row, col) {
 
 ```Javascript
 lpadOut.setLed(3, 4, [0, 3]);
+lpadOut.setLed(4, 2, [2, 2]);
+lpadOut.setLed(0, 0, [2, 0]);
+lpadOut.setLed(8, 8, [3, 3]);
 ```
 
 Set the LED in row 3, column 4, to be the color with red = 0
@@ -73,9 +76,9 @@ changes immediately.
 Send a number of updates to the hidden buffer:
 
 ```Javascript
-lpadOut.setLed(5, 6, [2, 2], 'buffer');
-lpadOut.setLed(3, 4, [0, 2], 'buffer');
-lpadOut.setLed(5, 7, [2, 0], 'buffer');
+lpadOut.setLed(5, 6, [2, 2], 'update');
+lpadOut.setLed(3, 4, [0, 2], 'update');
+lpadOut.setLed(5, 7, [2, 0], 'update');
 ```
 
 Show all changes at once:
