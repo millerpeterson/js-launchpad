@@ -4,11 +4,12 @@ var dummyMIDI = require('./../lib/dummy_midi_interface.js');
 var assert = require('assert');
 var util = require('util');
 var _ = require('underscore');
-var assertExpectedLoggedBytes = 
+var assertExpectedLoggedBytes =
   testHelper.assertExpectedLoggedBytes;
 
-var lPad = new launchpad.output()
-lPad.init(new dummyMIDI.midi());
+var lPad = new launchpad.output();
+var dummyDevice = new dummyMIDI.midi();
+lPad.init(dummyDevice);
 
 suite('launchpad-output', function() {
 
@@ -24,12 +25,12 @@ suite('launchpad-output', function() {
 
   test('setLed valid main grid 2', function() {
     lPad.setLed(7, 7, [1, 1], 'update');
-    assertExpectedLoggedBytes(lPad, [[144, 103, 25]]);
+    assertExpectedLoggedBytes(lPad, [[144, 103, 17]]);
   });
 
   test('setLed valid main grid 3', function() {
     lPad.setLed(1, 7, [3, 0], 'flash');
-    assertExpectedLoggedBytes(lPad, [[144, 7, 3]]);
+    assertExpectedLoggedBytes(lPad, [[144, 7, 11]]);
   });
 
   test('setLed main grid no mode specified', function() {
@@ -98,7 +99,7 @@ suite('launchpad-output', function() {
   });
 
   test('setDutyCycle', function() {
-    var testDutyCycles = [[12, 5], 
+    var testDutyCycles = [[12, 5],
 			  [2, 12],
 			  [9, 18],
 			  [14, 12]]
