@@ -1,20 +1,17 @@
-plaunchpad
+phi-launchpad
 ==========
 
 A Node.js interface for interacting with the Novation Launchpad.
 
-plaunchpad implements the [Launchpad MIDI spec](http://global.novationmusic.com/support/product-downloads?product=Launchpad, "Launchpad programmer's reference") 
+phi-launchpad implements the [Launchpad MIDI spec](http://global.novationmusic.com/support/product-downloads?product=Launchpad, "Launchpad programmer's reference")
 allowing you to catch button presses and manipulate LEDs.
 
 ## Installation
 
-The [midi](https://github.com/justinlatimer/node-midi) package 
-is used for output; note its requirements.
-
 Install via npm:
 
 ```
-$ npm install plaunchpad
+$ npm install phi-launchpad
 ```
 
 ## Usage
@@ -24,7 +21,7 @@ $ npm install plaunchpad
 Connect to MIDI:
 
 ```Javascript
-var plaunchpad = require('plaunchpad');
+var plaunchpad = require('phi-launchpad');
 
 var lpadIn = new plaunchpad.input();
 lpadIn.init();
@@ -57,20 +54,20 @@ lpadOut.setLed(8, 8, [3, 3]);
 ```
 
 Set the LED in row 3, column 4, to be the color with red = 0
-la(no red) and green = 3 (full green). Calls with arguments out 
+la(no red) and green = 3 (full green). Calls with arguments out
 of range either in position or color are ignored.
 
-plaunchpad addresses the Launchpad as a 9x9 matrix with a 
+plaunchpad addresses the Launchpad as a 9x9 matrix with a
 "hole" in the upper rightmost element.
 
 Colors are represented as red/green pairs: [0..3,0..3]
 
 ### Buffered Updates
 
-The Launchpad is double-buffered; it has one showing buffer, 
+The Launchpad is double-buffered; it has one showing buffer,
 and another that is hidden. To reduce flicker while updating
 large portions of the Launchpad, you can send updates to the
-hidden buffer, then swap the two buffers to show all of the 
+hidden buffer, then swap the two buffers to show all of the
 changes immediately.
 
 Send a number of updates to the hidden buffer:

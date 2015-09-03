@@ -1,10 +1,9 @@
 {
   "name": "phi-launchpad",
-  "version": "0.9.9",
+  "version": "0.9.10",
   "description": "Library for easily interacting with the Novation Launchpad.",
-  "main": "plaunchpad.js",
+  "main": "/lib/aunchpad.js",
   "dependencies": {
-    "midi": "0.7.x",
     "underscore": "1.5.x"
   },
   "devDependencies": {
